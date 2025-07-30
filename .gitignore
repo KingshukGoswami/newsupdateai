@@ -8,3 +8,6 @@ env/
 
 # Python bytecode cache
 __pycache__/
+
+#summarize is not used since it needs LLM which not free to use.
+summarize_news.py
