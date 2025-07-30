@@ -1,2 +1,10 @@
+# Secrets and environment variables
 email_config.json
 api_key.json
+.env
+
+# Python virtual environment
+env/
+
+# Python bytecode cache
+__pycache__/
