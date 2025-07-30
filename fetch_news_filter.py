@@ -14,8 +14,12 @@ def load_user_config(path="user_config.json"):
 
 def fetch_filtered_news():
     config = load_user_config()
+
+    with open("api_key.json") as api_key_file:
+        api_key = json.load(api_key_file)
+
     params = {
-        "apiKey": "8ef2bfb718ca41a5b242a95c26d06db5",
+        "apiKey": api_key["api_key"],
         "language": config["language"],
         "country": config.get("country"),
         "category": config.get("category"),
@@ -33,7 +37,7 @@ def fetch_filtered_news():
             news = {
                 "title": article["title"],
                 "description": article["description"],
-                "content": article["content"],
+                "content": article.get("content"),
                 "url": article["url"],
                 "source": article["source"]["name"],
                 "publishedAt": article["publishedAt"]
@@ -50,4 +54,3 @@ if __name__ == "__main__":
     for i, news in enumerate(top_news, 1):
         print(f"{i}. {news['title']} ({news['source']})")
         print(f"   {news['description']}\n")
-
