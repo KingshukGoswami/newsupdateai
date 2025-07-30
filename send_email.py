@@ -1,14 +1,16 @@
-import os
 import smtplib
-from dotenv import load_dotenv
+import json
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from fetch_news_filter import fetch_filtered_news  # Assumes this function exists and works
 
-load_dotenv()
+# Load from email_config.json
+with open("email_config.json") as config_file:
+    config = json.load(config_file)
 
-EMAIL_SENDER = os.getenv("EMAIL_SENDER")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-EMAIL_RECIPIENTS = os.getenv("EMAIL_RECIPIENTS").split(",")
+EMAIL_SENDER = config["EMAIL_SENDER"]
+EMAIL_PASSWORD = config["EMAIL_PASSWORD"]
+EMAIL_RECIPIENTS = config["EMAIL_RECIPIENTS"]  # Should be a list
 
 
 def build_html(news_items):
@@ -31,19 +33,16 @@ def send_news_email(news_items):
     msg.attach(MIMEText(html_content, "html"))
 
     try:
-        # Use Outlook SMTP
-        with smtplib.SMTP("smtp.office365.com", 587) as server:
-            server.starttls()
+        with smtplib.SMTP_SSL("smtp.mail.yahoo.com", 465) as server:
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)
             server.sendmail(EMAIL_SENDER, EMAIL_RECIPIENTS, msg.as_string())
-        print("✅ Email sent successfully via Outlook.")
+        print("✅ Email sent successfully.")
     except Exception as e:
-        print(f"❌ Failed to send email via Outlook: {e}")
+        print(f"❌ Failed to send email: {e}")
 
 
-# Example Usage
+# Run the email sender
 if __name__ == "__main__":
-    from fetch_news_filter import fetch_filtered_news
-
     top_news = fetch_filtered_news()
+    print (top_news)
     send_news_email(top_news)
