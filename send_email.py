@@ -44,4 +44,5 @@ def send_news_email(news_items):
 # Run the email sender
 if __name__ == "__main__":
     top_news = fetch_filtered_news()
+    print(top_news)
     send_news_email(top_news)

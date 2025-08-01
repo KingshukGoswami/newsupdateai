@@ -1,6 +1,7 @@
 {
   "language": "en",
-  "category": "business",
+  "category": ["technology"],
   "keyword": "AI",
-  "page_size": 30
+  "page_size": 30,
+  "key": "keyvalue"
 }
